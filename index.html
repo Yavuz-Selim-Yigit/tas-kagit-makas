@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taş Kağıt Makas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+      text-align: center;
+      padding: 40px 10px;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .scoreboard {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .buttons button {
+      font-size: 18px;
+      padding: 15px 25px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background-color: #2196f3;
+      color: white;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .buttons button:hover {
+      background-color: #1565c0;
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    img.icon {
+      width: 40px;
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+
+    @media (max-width: 600px) {
+      .buttons button {
+        flex: 1 1 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Taş Kağıt Makas Oyunu</h1>
+  <div class="scoreboard">
+    Oyuncu: <span id="playerScore">0</span> - Bilgisayar: <span id="computerScore">0</span>
+  </div>
+  <div class="buttons">
+    <button onclick="playGame(0)"><img src="https://img.icons8.com/ios-filled/50/rock.png" class="icon"
+        alt="Taş" />Taş</button>
+    <button onclick="playGame(1)"><img src="https://img.icons8.com/ios-filled/50/paper.png" class="icon"
+        alt="Kağıt" />Kağıt</button>
+    <button onclick="playGame(2)"><img src="https://img.icons8.com/ios-filled/50/scissors.png" class="icon"
+        alt="Makas" />Makas</button>
+  </div>
+  <div class="result" id="result"></div>
+
+  <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
+  <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.mp3"></audio>
+  <audio id="drawSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-show-wrong-answer-buzz-950.mp3"></audio>
+
+  <script>
+    const choices = ["Taş", "Kağıt", "Makas"];
+    let playerScore = 0;
+    let computerScore = 0;
+
+    function playGame(playerChoice) {
+      const computerChoice = Math.floor(Math.random() * 3);
+      let resultText = `Oyuncu: ${choices[playerChoice]} <br> Bilgisayar: ${choices[computerChoice]} <br>`;
+
+      const winSound = document.getElementById("winSound");
+      const loseSound = document.getElementById("loseSound");
+      const drawSound = document.getElementById("drawSound");
+
+      if (playerChoice === computerChoice) {
+        resultText += "Sonuç: Berabere!";
+        drawSound.play();
+      } else if (
+        (playerChoice === 0 && computerChoice === 2) ||
+        (playerChoice === 1 && computerChoice === 0) ||
+        (playerChoice === 2 && computerChoice === 1)
+      ) {
+        resultText += "Sonuç: Oyuncu Kazandı!";
+        playerScore++;
+        winSound.play();
+      } else {
+        resultText += "Sonuç: Bilgisayar Kazandı!";
+        computerScore++;
+        loseSound.play();
+      }
+
+      document.getElementById("result").innerHTML = resultText;
+      document.getElementById("playerScore").innerText = playerScore;
+      document.getElementById("computerScore").innerText = computerScore;
+    }
+  </script>
+</body>
+
+</html>
